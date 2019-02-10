@@ -1,6 +1,6 @@
 //syncCurrency by dmxrob - http://bbs.dmxrob.net | ssh://bbs.dmxrob.net | telnet://bbs.dmxrob
 //Code for Error Handling by Kirkman - http://breakintochat.com & https://github.com/Kirkman
-//Code for detection of a Web Socket client's Real IP address by echicken - http://bbs.electronicchicken.com/ & https://github.com/echicken
+
 
 var version = "1.00 - 02/10/2019"
 log(user.ip_address);
