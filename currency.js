@@ -1,8 +1,15 @@
-//syncCurrency by dmxrob - http://bbs.dmxrob.net | ssh://bbs.dmxrob.net | telnet://bbs.dmxrob
+//syncCurrency by dmxrob - http://blog.dmxrob.net | ssh://bbs.dmxrob.net | telnet://bbs.dmxrob
 //Code for Error Handling by Kirkman - http://breakintochat.com & https://github.com/Kirkman
 
 
-var version = "1.00 - 02/10/2019"
+var version = "1.10 - 02/12/2019";
+
+var apiEndpoint = "https://openexchangerates.org/api/";
+var apiLatestCall = "latest.json?app_id=";
+var apiCurrencyListCall = "currencies.json?prettyprint=true&show_alternative=false&show_inactive=false";  // Freebie call!
+
+var usd_amount = 1;  // Base currency amount in USD
+
 log(user.ip_address);
 
 //Load modopts.ini info early so we can detect if the section exists for [syncCurrency]
@@ -48,11 +55,10 @@ var cy = "\001c\1h"; //Synchronet Ctrl-A Code for High Intensity Cyan
 function getExchangeRates() {
 // This function calls the API and displays the current exchange rates. 
 
-
 		
 		// Make the API call
 		var req = new HTTPRequest();
-		var currentRatesResponse = req.Get("https://openexchangerates.org/api/latest.json?app_id=" + openExchangeAPIkey);
+		var currentRatesResponse = req.Get(apiEndpoint + apiLatestCall + openExchangeAPIkey);
 		if (currentRatesResponse === undefined) {
 			// Something went wrong
 			log("ERROR in currency.js:  Request to openexchangerates.org returned nothing/undefined");
@@ -72,7 +78,7 @@ function getExchangeRates() {
 		console.crlf();
 		console.putmsg(bl + "Exchange Rates Current as of " + yl + dt);
 		console.crlf();
-		console.putmsg(bl + "Rates shown below are for " + wh + "1 USD.")
+		console.putmsg(bl + "Rates shown below are for " + wh + usd_amount + " USD.")
 		console.crlf();
 		console.crlf();
 	
@@ -88,7 +94,11 @@ function getExchangeRates() {
 	
 	
 		console.crlf();
-		// Now ask user if they want to search for a specific Exchange Rate
+
+		// Return JSON object with rates so we don't have to continue making repeat calls to API 
+
+		return currentRatesJSON; 
+		
 		
 
 
@@ -96,6 +106,50 @@ function getExchangeRates() {
 }
 
 
+function searchExchangeRates(currentRatesJSON) {
+	// This function will allow the user to search Exchange Rates for a currency.
+
+	var exchangeRates = Object.keys(currentRatesJSON.rates);
+	var ready_to_exit = false;
+	var user_input = "";
+
+	while (!ready_to_exit && bbs.online) {
+		console.putmsg("Enter currency to search for, ? for list or Q to quit: ")
+		console.getkeys(user_input,3);  // Read a maximum of 3 letters in.
+		
+		if (user_input == "Q" || user_input == "q") {
+			ready_to_exit = true;
+		}
+		else if (user_input == "?") { // Display all the currencies to choose from
+			console.putmsg(rd + "Valid currencies to choose from:");
+			console.crlf();
+			for (var i = 0; i < exchangeRates.length; i++) { // Print out currencies, 15 per line.
+					if (i/15 == 0) {
+						console.crlf();
+					}
+					console.putmsg(wh + exchangeRates[i] + gy + ",");
+					
+				
+			}
+			console.crlf();
+
+
+		}
+		else if (exchangeRates.indexOf(user_input) != -1) { //Found it, display it
+			console.crlf();
+			console.putmsg(wh + usd_amount + cy + " USD" + bl + " is equal to " + wh + currentRatesJSON.rates[exchangeRates.indexOf(user_input)] + cy + " " + user_input);
+			console.crlf(2);
+		}
+		else {
+			console.putmsg(rd + "Invalid choice. Try again.");
+			console.crlf();
+		}
+
+		
+
+	}
+
+}
        
 			
 
@@ -103,12 +157,13 @@ try {
 
 	// Print a welcome message and header
 	console.clear();
-	console.putmsg(bl + "syncCurrency v" + cy + version);
+	console.putmsg(bl + "syncCurrency " + cy + "v" + version);
 	console.crlf();
-	console.putmsg(bl + "by " + wh + "dmxrob" + bl + "/" + wh + "Gateway to the West BBS (bbs.dmxrob.net)");
+	console.putmsg(bl + "by " + wh + "dmxrob");
 	console.crlf();
 
-    getExchangeRates();
+	var currentRatesJSON = getExchangeRates();
+	searchExchangeRates(currentRatesJSON);
     console.pause();
     console.clear();
     console.aborted = false;
@@ -116,9 +171,9 @@ try {
 } catch (err) {
 
 log("ERROR in currency.js. " + err);
-log(LOG_DEBUG,"DEBUG for currency.js. API call looked like this at time of error: " + "http://api.wunderground.com/api/" + openExchangeAPIkey + "/conditions/forecast/astronomy/alerts/" + WXlang + "q/" + wungrndQuery);
+log(LOG_DEBUG,"DEBUG for currency.js. API call looked like this at time of error: " + apiEndpoint + openExchangeAPIkey);
 log(LOG_DEBUG,"DEBUG for currency.js. The user.connection object looked like this at the time of error: " + user.connection);
-log(LOG_DEBUG,"DEBUG for currency.js. The dialup variable looked like this at the time of error: " + dialup);
+
 
 } finally {
 
