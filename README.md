@@ -21,3 +21,11 @@ Please see the [LICENSE](https://github.com/robertstinnett/syncCurrency/blob/mas
 
 1.00 (2019-02-10)
 * First  release, here's hoping for the best!
+
+1.10 (2019-02-12)
+* Added ability to search for specific currencies
+* Added ability to display all known currencies
+* Changed API endpoints to variables
+* Changed base currency amount to variable
+* Fixed typos in documentation
+
