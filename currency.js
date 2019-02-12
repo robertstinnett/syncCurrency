@@ -73,7 +73,6 @@ function getExchangeRates() {
 
 		// Print it out
 		var exchangeRates = Object.keys(currentRatesJSON.rates);
-
 		var dt = new Date(currentRatesJSON.timestamp*1000);
 		console.crlf();
 		console.putmsg(bl + "Exchange Rates Current as of " + yl + dt);
@@ -112,10 +111,12 @@ function searchExchangeRates(currentRatesJSON) {
 	var exchangeRates = Object.keys(currentRatesJSON.rates);
 	var ready_to_exit = false;
 	var user_input = "";
+	
+	var dt = new Date(currentRatesJSON.timestamp*1000);
 
 	while (!ready_to_exit && bbs.online) {
 		console.putmsg("Enter currency to search for, ? for list or Q to quit: ")
-		console.getkeys(user_input,3);  // Read a maximum of 3 letters in.
+		user_input = console.getstr(user_input,3);  // Read a maximum of 3 letters in.
 		
 		if (user_input == "Q" || user_input == "q") {
 			ready_to_exit = true;
@@ -124,7 +125,7 @@ function searchExchangeRates(currentRatesJSON) {
 			console.putmsg(rd + "Valid currencies to choose from:");
 			console.crlf();
 			for (var i = 0; i < exchangeRates.length; i++) { // Print out currencies, 15 per line.
-					if (i/15 == 0) {
+					if (i%15 == 0) {
 						console.crlf();
 					}
 					console.putmsg(wh + exchangeRates[i] + gy + ",");
@@ -137,11 +138,11 @@ function searchExchangeRates(currentRatesJSON) {
 		}
 		else if (exchangeRates.indexOf(user_input) != -1) { //Found it, display it
 			console.crlf();
-			console.putmsg(wh + usd_amount + cy + " USD" + bl + " is equal to " + wh + currentRatesJSON.rates[exchangeRates.indexOf(user_input)] + cy + " " + user_input);
+			console.putmsg(wh + usd_amount + cy + " USD" + bl + " is equal to " + wh + currentRatesJSON.rates[user_input] + cy + " " + user_input + bl + " as of " + yl + dt);
 			console.crlf(2);
 		}
 		else {
-			console.putmsg(rd + "Invalid choice. Try again.");
+			console.putmsg(rd + "Invalid choice " + wh + user_input + rd + ". Try again.");
 			console.crlf();
 		}
 
