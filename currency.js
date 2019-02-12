@@ -2,7 +2,7 @@
 //Code for Error Handling by Kirkman - http://breakintochat.com & https://github.com/Kirkman
 
 
-var version = "1.10 - 02/12/2019";
+var version = "1.11 - 02/12/2019";
 
 var apiEndpoint = "https://openexchangerates.org/api/";
 var apiLatestCall = "latest.json?app_id=";
@@ -115,7 +115,7 @@ function searchExchangeRates(currentRatesJSON) {
 	var dt = new Date(currentRatesJSON.timestamp*1000);
 
 	while (!ready_to_exit && bbs.online) {
-		console.putmsg("Enter currency to search for, ? for list or Q to quit: ")
+		console.putmsg(bl + "Enter currency to search for, " + wh + "?" + bl + " for list or " + wh + "Q" + bl + " to quit: ")
 		user_input = console.getstr(user_input,3);  // Read a maximum of 3 letters in.
 		
 		if (user_input == "Q" || user_input == "q") {

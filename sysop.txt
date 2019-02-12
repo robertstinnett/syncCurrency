@@ -30,7 +30,7 @@ Setting up the syncCurrency App (currency.js):
 
 2: Add the following section to your ctrl/modopts.ini file (typically located at /sbbs/ctrl/modopts.ini):
 
-[synCurrency]
+[syncCurrency]
 openExchangeAPIkey = <your API key here>
 currencyTypes = MXN|CAD|EUR|GBP
 

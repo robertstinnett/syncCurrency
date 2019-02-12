@@ -6,9 +6,9 @@ exchange rates for $1.00USD in various currencies.  It uses data from the Free A
 ## Screenshots 
 
 Regular View:  
-![syncCurrency Main Screen Shot](http://blog.dmxrob.net/wp-content/uploads/2019/02/syncurrency-screenshot.png)
+![syncCurrency Main Screen Shot](http://blog.dmxrob.net/wp-content/uploads/2019/02/syncCurrency-Main-Menu-1.11.png)
 
-![syncCurrency Search for Specific Currency Screen Shot]()
+![syncCurrency Search for Specific Currency Screen Shot](http://blog.dmxrob.net/wp-content/uploads/2019/02/syncCurrency-Search-Function-1.11.png)
 
 ## Installation
 
@@ -31,3 +31,7 @@ Please see the [LICENSE](https://github.com/robertstinnett/syncCurrency/blob/mas
 * Changed base currency amount to variable
 * Fixed typos in documentation
 
+1.11 (2019-02-12)
+* Fixed typo in sysop.txt for configuration
+* Added second screenshot to README.md file
+* Added color prompts to menu items
